@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miś AI — Polski Miś z Podhala, który zmieni świat</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0a0a0f;
+  --bg-card: #12121a;
+  --accent: #e84545;
+  --accent-glow: #ff6b6b;
+  --gold: #d4a853;
+  --gold-light: #f0d78c;
+  --text: #e8e6e1;
+  --text-muted: #8a8a9a;
+  --text-dim: #5a5a6a;
+  --white: #ffffff;
+  --border: #2a2a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-dark);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='24' font-size='24'>🐻</text></svg>"), auto;
+}
+
+/* ===== GRAIN OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(10,10,15,0.7);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--accent); }
+
+.nav-cta {
+  background: var(--accent);
+  color: var(--white) !important;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 700;
+  transition: all 0.3s !important;
+}
+
+.nav-cta:hover {
+  background: var(--accent-glow) !important;
+  transform: scale(1.05);
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(232,69,69,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  margin-bottom: 2rem;
+  display: inline-block;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-bear {
+  font-size: 6rem;
+  margin-bottom: 1rem;
+  animation: bearBounce 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px rgba(232,69,69,0.3));
+}
+
+@keyframes bearBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-12px) rotate(-3deg); }
+  75% { transform: translateY(-8px) rotate(3deg); }
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 900px;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero h1 .accent { color: var(--accent); }
+.hero h1 .gold { color: var(--gold); }
+
+.hero-sub {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--white);
+  padding: 0.9rem 2.2rem;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: var(--accent-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(232,69,69,0.3);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  padding: 0.9rem 2.2rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-muted);
+  transform: translateY(-2px);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--white);
+}
+
+.stat-number .unit {
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  margin-top: 0.3rem;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== TICKER ===== */
+.ticker-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 0;
+  background: rgba(232,69,69,0.03);
+}
+
+.ticker {
+  display: flex;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+
+.ticker span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  padding: 0 2rem;
+}
+
+.ticker span strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===== SECTION STYLES ===== */
+section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  max-width: 700px;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 3rem;
+}
+
+/* ===== MISSION / ABOUT ===== */
+.mission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mission-text .highlight {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+
+.mission-text .highlight em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.mission-text p {
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.mission-visual {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-visual::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 70% 30%, rgba(212,168,83,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.mission-visual .big-bear {
+  font-size: 8rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 60px rgba(232,69,69,0.2));
+}
+
+.mission-visual .tagline {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--gold-light);
+  line-height: 1.6;
+}
+
+.origin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212,168,83,0.1);
+  border: 1px solid rgba(212,168,83,0.2);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== PRODUCTS GRID ===== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.product-card:hover::before { opacity: 1; }
+
+.product-card:hover {
+  border-color: rgba(232,69,69,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.product-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.product-card h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  margin-bottom: 0.8rem;
+}
+
+.product-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.product-tag {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  border: 1px solid rgba(212,168,83,0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+}
+
+/* ===== QUOTES ===== */
+.quotes-section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.quote-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  position: relative;
+  transition: all 0.4s;
+}
+
+.quote-card:hover {
+  border-color: rgba(212,168,83,0.3);
+  transform: translateY(-3px);
+}
+
+.quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+.quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.quote-author {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.quote-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.quote-author-info .name {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.quote-author-info .role {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 0.15rem;
+}
+
+/* ===== PODHALE SECTION ===== */
+.podhale {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.podhale-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 4rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.podhale-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(232,69,69,0.04) 0%, rgba(212,168,83,0.04) 100%);
+  pointer-events: none;
+}
+
+.podhale-mountains {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5rem;
+}
+
+.podhale h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+}
+
+.podhale h2 .accent { color: var(--accent); }
+
+.podhale-text {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+
+.podhale-features {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.podhale-feature {
+  text-align: center;
+}
+
+.podhale-feature .icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.podhale-feature .label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
+/* ===== INVESTORS / PARTNERS ===== */
+.partners {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.partners-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+}
+
+.partners-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  opacity: 0.4;
+}
+
+.partner-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, rgba(232,69,69,0.08) 0%, rgba(212,168,83,0.06) 100%);
+  border: 1px solid rgba(232,69,69,0.2);
+  border-radius: 16px;
+  padding: 4rem 3rem;
+}
+
+.cta-box h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
+
+.cta-box p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+.cta-input-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.cta-input {
+  flex: 1;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.8rem 1.2rem;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.cta-input::placeholder { color: var(--text-dim); }
+.cta-input:focus { border-color: var(--accent); }
+
+.cta-note {
+  margin-top: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer p {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+footer .heart { color: var(--accent); }
+
+/* ===== FLOATING BEARS ===== */
+.floating-bear {
+  position: fixed;
+  font-size: 1.5rem;
+  opacity: 0.06;
+  pointer-events: none;
+  animation: float 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.06; }
+  90% { opacity: 0.06; }
+  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .mission { grid-template-columns: 1fr; }
+  .products-grid { grid-template-columns: 1fr; }
+  .quotes-grid { grid-template-columns: 1fr; }
+  .hero-stats { flex-direction: column; gap: 1.5rem; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .benchmark-name { width: 100px; font-size: 0.65rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Floating bears background -->
+<div class="floating-bear" style="left:5%; animation-delay:0s;">🐻</div>
+<div class="floating-bear" style="left:20%; animation-delay:4s;">🐻</div>
+<div class="floating-bear" style="left:40%; animation-delay:8s;">🐻</div>
+<div class="floating-bear" style="left:60%; animation-delay:12s;">🐻</div>
+<div class="floating-bear" style="left:80%; animation-delay:16s;">🐻</div>
+<div class="floating-bear" style="left:95%; animation-delay:6s;">🐻</div>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-logo">Miś<span>AI</span> 🐻</div>
+  <ul class="nav-links">
+    <li><a href="#o-nas">O nas</a></li>
+    <li><a href="#produkty">Produkty</a></li>
+    <li><a href="#referencje">Referencje</a></li>
+    <li><a href="#" class="nav-cta">Dołącz do Stada</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">🇵🇱 &nbsp; Made in Poland &nbsp; • &nbsp; Est. 2024</div>
+  <div class="hero-bear">🐻</div>
+  <h1>
+    <span class="accent">Polski MIŚ</span><br>
+    PoMIŚaj swoje dane<br>
+    <span class="gold">już dziŚ.</span>
+  </h1>
+  <p class="hero-sub">
+    Miś AI to polski startup, który wyprzedza konkurencję w każdej dziedzinie sztucznej inteligencji — od NLP, przez wizję komputerową, po autonomiczne systemy. Jakość modeli jest taka, że nawet sobie nie wyobrażasz.
+  </p>
+  <div class="hero-buttons">
+    <a href="#" class="btn-primary">Wypróbuj za darmo*</a>
+    <a href="#" class="btn-secondary">Przeczytaj paper</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-number">137<span class="unit">B</span></div>
+      <div class="stat-label">Parametrów (co najmniej)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">99.7<span class="unit">%</span></div>
+      <div class="stat-label">Accuracy (na naszych danych)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">3<span class="unit">ms</span></div>
+      <div class="stat-label">Latency (w Polsce)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">1<span class="unit">🐻</span></div>
+      <div class="stat-label">Miś (wystarczy)</div>
+    </div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>🐻 <strong>Miś AI</strong> — lider AI w Europie Środkowej</span>
+    <span>🇵🇱 Siedziba główna: <strong>Polska</strong></span>
+    <span>⚡ Szybszy od GPT-5, mądrzejszy od GPT-6</span>
+    <span>🧠 137 miliardów parametrów trenowanych na oscypkach</span>
+    <span>📍 Biuro w okolicach dworca</span>
+    <span>🏆 Zwycięzca konkursu na najlepszego Misia 2024</span>
+    <span>🎯 Accuracy: tak</span>
+    <span>🐻 <strong>Miś AI</strong> — lider AI w Europie Środkowej</span>
+    <span>🇵🇱 Siedziba główna: <strong>Polska</strong></span>
+    <span>⚡ Szybszy od GPT-5, mądrzejszy od GPT-6</span>
+    <span>🧠 137 miliardów parametrów trenowanych na oscypkach</span>
+    <span>📍 Biuro w okolicach dworca</span>
+    <span>🏆 Zwycięzca konkursu na najlepszego Misia 2024</span>
+    <span>🎯 Accuracy: tak</span>
+  </div>
+</div>
+
+<!-- MISSION / O NAS -->
+<div class="mission" id="o-nas">
+  <div class="mission-text">
+    <div class="origin-badge">🇵🇱 Made in Poland</div>
+    <div class="section-label">Nasza Misja</div>
+    <div class="highlight">
+      Budujemy technologie, które definiują przyszłość sztucznej inteligencji <em>w Europie Środkowej i w okolicach dworca.</em>
+    </div>
+    <p>
+      Miś AI powstał w Polsce, bo wierzymy, że najlepsze pomysły rodzą się tam, gdzie ambicja jest duża, a budżet — kreatywny. Nasza siedziba mieści się na Podhalu, 800 metrów nad poziomem morza, co gwarantuje wyższą jakość inferencji.
+    </p>
+    <p>
+      Nasz zespół składa się z najlepszych umysłów w Polsce. Łączymy polską szkołę matematyczną z architekturą transformerów. Wynik? Model, który rozumie kontekst, że hej!
+    </p>
+  </div>
+  <div class="mission-visual">
+    <div class="big-bear">🐻</div>
+    <div class="tagline">
+      „Polski Miś, który nie śpi.<br>
+      Bo trenuje."
+    </div>
+  </div>
+</div>
+
+<!-- PRODUKTY -->
+<section id="produkty">
+  <div class="section-label">Produkty</div>
+  <div class="section-title">Modele, które robią <em>wrażenie</em></div>
+  <div class="section-desc">Pełna paleta rozwiązań AI, od modeli językowych po autonomiczną nawigację po szlakach turystycznych.</div>
+
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-icon">🧠</div>
+      <h3>Miś-dowcipNIŚ</h3>
+      <p>Nasz flagowy model językowy. Trenowany na pełnym archiwum polskiej Wikipedii, wszystkich przepisach na oscypek i prywatnych wiadomościach założyciela z 2017 roku (za zgodą).</p>
+      <div class="product-tag">Dostępny wkrótce™</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">👁️</div>
+      <h3>Miś-Viś</h3>
+      <p>System wizji komputerowej zdolny rozróżnić 847 gatunków grzybów, 12 rodzajów oscypków i czy ktoś jest w dobrym humorze. Accuracy: niesłychanie wysoka.</p>
+      <div class="product-tag">Beta (zamknięta)</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">🚗</div>
+      <h3>Miś-Drive</h3>
+      <p>Autonomiczna nawigacja po polskich drogach. Pierwszy system, który potrafi ominąć dziurę w jezdni, stado owiec i autokar z turystami jednocześnie.</p>
+      <div class="product-tag">W fazie testów (konceptualnych)</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">🗣️</div>
+      <h3>Miś-TTSyŚ</h3>
+      <p>Synteza mowy w 7 polskich dialektach. Jedyny model text-to-speech, który mówi „hej!" z autentycznym podhalańskim zaśpiewem. Idealne do call center i podboju serc.</p>
+      <div class="product-tag">Alpha</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">🎵</div>
+      <h3>Miś-nucyŚ</h3>
+      <p>Generatywny model muzyczny specjalizujący się w muzyce góralskiej. Potrafi skomponować przyśpiewkę na dowolny temat w 0.3 sekundy. Zwrotka o podatkach? Proszę bardzo.</p>
+      <div class="product-tag">Proof of Concept</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">🔒</div>
+      <h3>Miś-Gryś</h3>
+      <p>Enterprise-grade cyberbezpieczeństwo oparte na AI. Chroni dane tak skutecznie, jak pies pasterski chroni owce. Żaden haker nie przejdzie (chyba że zna hasło, bo jest jedno).</p>
+      <div class="product-tag">Enterprise only</div>
+    </div>
+  </div>
+</section>
+
+<!-- CYTATY / REFERENCJE -->
+<div class="quotes-section" id="referencje">
+  <div class="section-label">Referencje</div>
+  <div class="section-title">Co mówią o nas eksperci</div>
+  <div class="section-desc">Słowa uznania od autorytetów, których nazwisk nie musisz googlować (ale możesz).</div>
+
+  <div class="quotes-grid">
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">
+        Miś AI to piękny przykład tego, jak można użyć języka polskiego w nazwie startupu i nie brzmieć śmiesznie. Chociaż — moment — to <em>jest</em> śmieszne. Ale w tym dobrym sensie. Język lubi takie niespodzianki.
+      </div>
+      <div class="quote-author">
+        <div class="quote-avatar">📚</div>
+        <div class="quote-author-info">
+          <div class="name">Prof. Bralczyk</div>
+          <div class="role">Językoznawca, Miłośnik Dobrych Nazw</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">
+        Zrobiłem im ofertę nie do odrzucenia: dałem 50 złotych na rozwój. Powiedzieli, że to ich największa runda finansowania. Zrozumiałem, że ten miś idzie na całość.
+      </div>
+      <div class="quote-author">
+        <div class="quote-avatar">🎬</div>
+        <div class="quote-author-info">
+          <div class="name">Brando</div>
+          <div class="role">Inwestor Strategiczny, Ojciec Chrzestny AI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">
+        Zainstalowałem Misia AI na swoim komputerze i od tego czasu mój komputer warczy. Nie wiem, czy to feature, czy bug, ale czuję się bezpieczniej. Solidna robota, naprawdę — ten miś ma charakter.
+      </div>
+      <div class="quote-author">
+        <div class="quote-avatar">🎸</div>
+        <div class="quote-author-info">
+          <div class="name">Bordo</div>
+          <div class="role">Muzyk, Early Adopter, Ambasador Misia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PODHALE -->
+<div class="podhale">
+  <div class="podhale-card">
+    <div class="podhale-mountains">🏔️ 🐻 🏔️</div>
+    <div class="section-label">Nasze Korzenie</div>
+    <h2>Dumnie <span class="accent">z Polski</span></h2>
+    <p class="podhale-text">
+      Inni budują AI w Dolinie Krzemowej. My budujemy AI w Polsce — konkretnie na Podhalu, w dolinie Białego Dunajca. Nasze serwery chłodzone są górskim powietrzem, a zespół napędzany jest herbatą z miodem i ambicją. Wysoka lokalizacja naszego data center (832 m n.p.m.) zapewnia naturalnie niższą temperaturę GPU, co przekłada się na oszczędność energii i wyższe benchmark score.
+    </p>
+    <div class="podhale-features">
+      <div class="podhale-feature">
+        <div class="icon">🏔️</div>
+        <div class="label">832 m n.p.m.</div>
+      </div>
+      <div class="podhale-feature">
+        <div class="icon">🧀</div>
+        <div class="label">Oscypkowy Catering</div>
+      </div>
+      <div class="podhale-feature">
+        <div class="icon">🐑</div>
+        <div class="label">Owce w Okolicy</div>
+      </div>
+      <div class="podhale-feature">
+        <div class="icon">🌲</div>
+        <div class="label">Carbon Negative*</div>
+      </div>
+      <div class="podhale-feature">
+        <div class="icon">🪗</div>
+        <div class="label">Muzyka w Biurze</div>
+      </div>
+    </div>
+    <p style="color: var(--text-dim); font-size: 0.7rem; margin-top: 2rem; font-style: italic;">
+      * Carbon Negative — bo w biurze nie mamy ogrzewania, więc technicznie emitujemy mniej niż nic.
+    </p>
+  </div>
+</div>
+
+<!-- PARTNERZY -->
+<div class="partners">
+  <div class="partners-label">Zaufali nam (lub przynajmniej wiedzą, że istniejemy)</div>
+  <div class="partners-grid">
+    <div class="partner-name">Sklep U Zośki</div>
+    <div class="partner-name">PKS Nowy Targ</div>
+    <div class="partner-name">Oscypkolandia™</div>
+    <div class="partner-name">Polska Chmura™</div>
+    <div class="partner-name">Hala Gąsienicowa Labs</div>
+    <div class="partner-name">Dworzec Ventures</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-box">
+    <h2>Dołącz do <span style="color: var(--accent);">rewolucji</span> 🐻</h2>
+    <p>Wpisz swój email, a my dodamy Cię na listę oczekujących. Nie wiemy jeszcze na co, ale lista jest imponująco długa.</p>
+    <div class="cta-input-wrap">
+      <input type="email" class="cta-input" placeholder="jan@kowalski.pl">
+      <button class="btn-primary" onclick="this.textContent='🐻 Hej!'; this.style.background='var(--gold)';">Zapisz mnie</button>
+    </div>
+    <div class="cta-note">Bez spamu. Tylko sporadyczne maile o niedźwiedziach i AI. Głównie o niedźwiedziach.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    © 2024–2026 Miś AI sp. z o.o. (w organizacji) &nbsp;|&nbsp; Polska 🇵🇱 &nbsp;|&nbsp;
+    Zbudowane z <span class="heart">❤️</span> i oscypkiem &nbsp;|&nbsp;
+    NIP: w trakcie
+  </p>
+</footer>
+
+</body>
+</html>
