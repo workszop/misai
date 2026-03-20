@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CzNaPy — Często Nas Pytają | Miś AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0a0a0f;
+  --bg-card: #12121a;
+  --accent: #e84545;
+  --accent-glow: #ff6b6b;
+  --gold: #d4a853;
+  --gold-light: #f0d78c;
+  --text: #e8e6e1;
+  --text-muted: #8a8a9a;
+  --text-dim: #5a5a6a;
+  --white: #ffffff;
+  --border: #2a2a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-dark);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='24' font-size='24'>🐻</text></svg>"), auto;
+}
+
+/* ===== GRAIN OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(10,10,15,0.7);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--accent); }
+
+.nav-links a.active { color: var(--gold); }
+
+.nav-cta {
+  background: var(--accent);
+  color: var(--white) !important;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 700;
+  transition: all 0.3s !important;
+}
+
+.nav-cta:hover {
+  background: var(--accent-glow) !important;
+  transform: scale(1.05);
+}
+
+/* ===== FLOATING BEARS ===== */
+.floating-bear {
+  position: fixed;
+  font-size: 1.5rem;
+  opacity: 0.06;
+  pointer-events: none;
+  animation: float 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.06; }
+  90% { opacity: 0.06; }
+  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* ===== PAGE HERO ===== */
+.page-hero {
+  padding: 10rem 2rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(232,69,69,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.page-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  margin-bottom: 2rem;
+  display: inline-block;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.page-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.2rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.page-hero h1 .accent { color: var(--accent); }
+
+.page-hero .sub {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== FAQ CONTENT ===== */
+.faq-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2rem 6rem;
+}
+
+.faq-section {
+  margin-bottom: 4rem;
+}
+
+.faq-section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-section-header .icon {
+  font-size: 1.8rem;
+}
+
+.faq-section-header h2 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+/* ===== FAQ ITEMS ===== */
+.faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.faq-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.faq-item:hover {
+  border-color: rgba(232,69,69,0.25);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+.faq-item:hover::before {
+  opacity: 1;
+}
+
+.faq-question {
+  padding: 1.4rem 1.8rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  user-select: none;
+}
+
+.faq-question-text {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--white);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.faq-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  font-weight: 700;
+  min-width: 28px;
+  padding-top: 0.15rem;
+}
+
+.faq-toggle {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  transition: transform 0.3s, color 0.3s;
+  min-width: 24px;
+  text-align: center;
+}
+
+.faq-item.open .faq-toggle {
+  transform: rotate(45deg);
+  color: var(--accent);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 1000px;
+}
+
+.faq-answer-inner {
+  padding: 0 1.8rem 1.6rem 1.8rem;
+  padding-left: calc(1.8rem + 28px + 0.8rem);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  border-top: 1px solid var(--border);
+  padding-top: 1.2rem;
+}
+
+.faq-answer-inner p { margin-bottom: 0.8rem; }
+.faq-answer-inner p:last-child { margin-bottom: 0; }
+
+/* sub-items (a, b, c, d) */
+.faq-sub-item {
+  margin-bottom: 0.7rem;
+  padding-left: 0.5rem;
+}
+
+.faq-sub-item strong {
+  color: var(--gold);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  display: inline-block;
+  margin-right: 0.4rem;
+}
+
+/* ===== DISCLAIMER ===== */
+.disclaimer {
+  background: rgba(232,69,69,0.04);
+  border: 1px solid rgba(232,69,69,0.15);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  margin: 0 2rem 4rem;
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.disclaimer p {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.disclaimer p span { color: var(--accent); }
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer p {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+footer .heart { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .faq-answer-inner { padding-left: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Floating bears background -->
+<div class="floating-bear" style="left:5%; animation-delay:0s;">🐻</div>
+<div class="floating-bear" style="left:20%; animation-delay:4s;">🐻</div>
+<div class="floating-bear" style="left:40%; animation-delay:8s;">🐻</div>
+<div class="floating-bear" style="left:60%; animation-delay:12s;">🐻</div>
+<div class="floating-bear" style="left:80%; animation-delay:16s;">🐻</div>
+<div class="floating-bear" style="left:95%; animation-delay:6s;">🐻</div>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="index.html" class="nav-logo">Miś<span>AI</span> 🐻</a>
+  <ul class="nav-links">
+    <li><a href="index.html#o-nas">O nas</a></li>
+    <li><a href="index.html#produkty">Produkty</a></li>
+    <li><a href="index.html#referencje">Referencje</a></li>
+    <li><a href="cznappy.html" class="active">CzNaPy</a></li>
+    <li><a href="index.html#" class="nav-cta">Dołącz do Stada</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-badge">FAQ • Serio Pytali</div>
+  <h1>Często Nas Pytają<br><span class="accent">— odpowiada CEO Miś AI 🐻</span></h1>
+  <p class="sub">Zebraliśmy pytania, które zadają nam inwestorzy, klienci i przypadkowi turyści z Zakopanego. Odpowiadamy szczerze. Prawie.</p>
+</div>
+
+<!-- FAQ CONTENT -->
+<div class="faq-content">
+
+  <!-- PYTANIA BIZNESOWE -->
+  <div class="faq-section">
+    <div class="faq-section-header">
+      <span class="icon">💼</span>
+      <h2>Pytania biznesowe</h2>
+    </div>
+
+    <div class="faq-item open">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">01</span>
+        <span class="faq-question-text">Co jest waszym realnym IP, którego klient nie odtworzy łatwo sam?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Nasz miś. Serio — mamy zarejestrowany znak towarowy "Miś AI" (w trakcie). Poza tym nasze IP to unikalne podejście do chłodzenia GPU górskim powietrzem na wysokości 832 m n.p.m. Czy klient to odtworzy? Tylko jeśli ma biuro na Podhalu. A tam jest drogo, bo turyści.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">02</span>
+        <span class="faq-question-text">Czy jedyną cechą wyróżniającą jest on-premise?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>On-premise to za mało powiedziane. U nas to on-mountain. Dane klienta nigdy nie opuszczają Podhala. Czy safe-coder to "średniej jakości agent do programowania z lokalnym modelem"? Nie, to jest podhalański agent do programowania z lokalnym modelem. Zupełnie co innego. Czujesz ten górski powiew?</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">03</span>
+        <span class="faq-question-text">Co jest gotowym produktem, a co usługami wdrożeniowymi?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Gotowym produktem jest landing page. Reszta to usługi wdrożeniowe, które wdrażamy głównie w przyszłości. Miś-dowcipNIŚ jest "Dostępny wkrótce™" — ten znak towarowy też rejestrujemy. Miś-Viś jest w "Becie zamkniętej" — zamkniętej na klucz, bo jeszcze nie działa. Miś-Drive jest "w fazie testów konceptualnych", co oznacza, że konceptualnie testujemy, czy to w ogóle da się zrobić.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">04</span>
+        <span class="faq-question-text">Skąd pochodzi deklarowany wzrost produktywności 30–55%?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Mierzymy to metodą "przed kawą i po kawie". Przed kawą zespół ma produktywność zero. Po kawie — wzrost jest nieskończony, ale konserwatywnie raportujemy 30–55%. Case studies mamy jedno: nasz CTO zaczął używać ChatGPT i teraz pisze maile szybciej. Metryki: wcześniej pisał jeden mail dziennie, teraz — dwa.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">05</span>
+        <span class="faq-question-text">Ilu macie inżynierów ML i security?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Nasz zespół to "najlepsze umysły w Polsce" — tak jest napisane na stronie, więc to musi być prawda. Konkretnie: mamy jednego inżyniera ML, który jest jednocześnie inżynierem security, DevOpsem, front-end developerem i osobą odpowiedzialną za catering oscypkowy. Doświadczenie w regulowanych branżach? Regulujemy temperaturę w biurze ręcznie, bo nie mamy ogrzewania.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">06</span>
+        <span class="faq-question-text">Ile macie wdrożeń produkcyjnych i u jakich klientów?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Zaufali nam: Sklep U Zośki, PKS Nowy Targ i Oscypkolandia™. U Zośki wdrożyliśmy system rekomendacji, który zawsze rekomenduje oscypek. Accuracy: 100%, bo w sklepie jest tylko oscypek.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">07</span>
+        <span class="faq-question-text">Jak w praktyce zapewniacie zgodność z RODO?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Nie zbieramy danych osobowych, bo nasz system jeszcze nie działa. To najbezpieczniejsze podejście do RODO: zero danych = zero problemów. A jak zacznie działać, to się zastanowimy. NIP mamy "w trakcie", więc UODO nas jeszcze nie znajdzie.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PYTANIA TECHNICZNE -->
+  <div class="faq-section">
+    <div class="faq-section-header">
+      <span class="icon">⚙️</span>
+      <h2>Pytania techniczne</h2>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">01</span>
+        <span class="faq-question-text">Czy sami trenujecie/dotrenowujecie modele?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <div class="faq-sub-item"><strong>a)</strong> Fine-tuning: Stosujemy metodę "LoRA, ale z sercem". W praktyce downloadujemy model z HuggingFace i zmieniamy system prompt na "Jesteś polskim misiem".</div>
+          <div class="faq-sub-item"><strong>b)</strong> Języki inne niż angielski: Nasz model rozumie 7 polskich dialektów. Angielski — średnio. Ale kto potrzebuje angielskiego na Podhalu?</div>
+          <div class="faq-sub-item"><strong>c)</strong> Własne dane treningowe: Trenujemy na pełnym archiwum polskiej Wikipedii, przepisach na oscypek i "prywatnych wiadomościach założyciela z 2017 roku (za zgodą)". Dokładnie tak, jak napisaliśmy na stronie.</div>
+          <div class="faq-sub-item"><strong>d)</strong> Modele ASR: Whisper, ale mówi z podhalańskim zaśpiewem.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">02</span>
+        <span class="faq-question-text">ASR: jak radzicie sobie ze specjalistycznym słownictwem i jakością nagrań?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Nasz system ASR rozpoznaje słowa "oscypek", "hej!" i "baca" z accuracy 99.7% (na naszych danych). Słownictwo prawnicze? Rozpoznajemy słowo "pozew", bo dostajemy dużo pozwów. Diaryzacja? Zakładamy, że mówi jeden miś.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">03</span>
+        <span class="faq-question-text">Najtrudniejszy nierozwiązany problem techniczny?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Ogrzewanie biura. Technicznie: "emitujemy mniej niż nic", bo nie mamy ogrzewania. Zespół pracuje w rękawiczkach od listopada do marca.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">04</span>
+        <span class="faq-question-text">Jakie macie benchmarki? Jak mierzycie jakość RAG?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Accuracy: 99.7% — na naszych danych. Mierzymy jakość RAG metodą "czy odpowiedź wspomina oscypek?" Jeśli tak — relevant. Jeśli nie — hallucination. Benchmark score jest wyższy dzięki lokalizacji na 832 m n.p.m. (to nie żart — to jest na stronie).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">05</span>
+        <span class="faq-question-text">Jak konkretnie zapobiegacie wyciekom danych i prompt injection?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Jedno hasło do całego systemu. Jakie? Nie mogę powiedzieć, ale rymuje się z "oscypek". Prompt injection blokujemy poprzez to, że nasz model nie rozumie skomplikowanych promptów.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">06</span>
+        <span class="faq-question-text">Czy macie formalny threat model lub audyt bezpieczeństwa?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Nasz model zagrożeń: (1) niedźwiedź wchodzi do serwerowni, (2) turyści pytają o WiFi, (3) brak prądu gdy wieje halny. Audyt bezpieczeństwa? Pies pasterski regularnie patroluje biuro.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">07</span>
+        <span class="faq-question-text">Jakie są realne wymagania sprzętowe?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Jeden laptop, górskie powietrze i stabilne łącze (tego jeszcze nie mamy). GPU chłodzone naturalnie — zaleta lokalizacji. RAM: "wystarczająco". Realne wymagania? Niedostępne, bo jeszcze nie testowaliśmy na niczym większym niż demo na stronie.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-number">08</span>
+        <span class="faq-question-text">Jakie macie typowe latency i ilu użytkowników system obsłuży?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>3ms latency — w Polsce. Konkretnie: w promieniu 50 metrów od naszego biura. Dalej — zależy od pogody. Ilu użytkowników jednocześnie? Na razie testowaliśmy z jednym. Było dobrze.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <p>
+    <span>Disclaimer:</span> Miś AI sp. z o.o. (w organizacji) nie ponosi odpowiedzialności za utratę wiary w polski ekosystem startupowy po przeczytaniu tego dokumentu. NIP: w trakcie.
+  </p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    © 2024–2026 Miś AI sp. z o.o. (w organizacji) &nbsp;|&nbsp; Polska 🇵🇱 &nbsp;|&nbsp;
+    Zbudowane z <span class="heart">❤️</span> i oscypkiem &nbsp;|&nbsp;
+    NIP: w trakcie
+  </p>
+</footer>
+
+<script>
+function toggleFaq(questionEl) {
+  const item = questionEl.closest('.faq-item');
+  item.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
